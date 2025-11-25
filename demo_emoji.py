@@ -6,37 +6,32 @@ import types
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 NLTK_DIR = os.path.join(BASE_DIR, "nltk")
 
-# 1) Lightweight 'nltk' package pointing at local code
-if "nltk" not in sys.modules:
-    nltk = types.ModuleType("nltk")
-    nltk.__path__ = [NLTK_DIR]
-    sys.modules["nltk"] = nltk
+# 1) Lightweight 'nltk' shim (only if using a local fork)
+nltk = types.ModuleType("nltk")
+nltk.__path__ = [NLTK_DIR]
+sys.modules["nltk"] = nltk
 
-# 2) Ensure project root is on sys.path
-if BASE_DIR not in sys.path:
-    sys.path.insert(0, BASE_DIR)
-
-# 3) Import directly from the casual tokenizer module
+# 2) Direct import from the casual tokenizer module
 from nltk.tokenize.casual import TweetTokenizer
 
-# ✅ 4) Create the tokenizer instance (you forgot this line)
+# 3) Create tokenizer instance
 tokenizer = TweetTokenizer()
 
-# 5) Additional tests for emoji-aware tokenization
+# 4) Emoji test cases
 test_cases = [
-    "😂🔥💯",  # Only emojis
-    "Hello 😂🔥💯!!!",  # Mixed with punctuation
-    "Let's grab coffee ☕️ later 😊",  # Word + emoji + variation selector
-    "I can't believe it!!! 😱😱😱",  # Repeated emojis
-    "❤️💔💕💞💖💗💙💚💛💜🖤",  # Different heart emojis
-    "Flags are cool 🇺🇸🇬🇧🇳🇬",  # Multi-codepoint flag emojis
-    "Family 👨‍👩‍👧‍👦 emojis join together",  # Zero-width joiner sequences
-    "Custom combo 👍🏽😂🔥",  # Skin tone + emojis
-    "Good morning ☀️🌈🌻",  # Common emoji set
-    "No emoji here at all.",  # Control: plain text
+    "😂🔥💯",
+    "Hello 😂🔥💯!!!",
+    "Let's grab coffee ☕️ later 😊",
+    "I can't believe it!!! 😱😱😱",
+    "❤️💔💕💞💖💗💙💚💛💜🖤",
+    "Flags are cool 🇺🇸🇬🇧🇳🇬",
+    "Family 👨‍👩‍👧‍👦 emojis join together",
+    "Custom combo 👍🏽😂🔥",
+    "Good morning ☀️🌈🌻",
+    "No emoji here at all.",
 ]
 
-# 6) Run tests
+# 5) Run tests
 for i, text in enumerate(test_cases, 1):
     tokens = tokenizer.tokenize(text)
     print(f"\nTest {i}: {text}")

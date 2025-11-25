@@ -39,7 +39,7 @@ def try_port(port=0):
 
 def is_port_listening(host, port, timeout=0.1):
     """Check if a port is listening (accepting connections).
-    
+
     :param host: Hostname to check (e.g., 'localhost')
     :param port: Port number to check
     :param timeout: Socket timeout in seconds
@@ -176,14 +176,16 @@ class CoreNLPServer:
             returncode = self.popen.poll()
             if returncode is not None:
                 _, stderrdata = self.popen.communicate()
-                error_msg = stderrdata.decode("ascii") if stderrdata else "Unknown error"
+                error_msg = (
+                    stderrdata.decode("ascii") if stderrdata else "Unknown error"
+                )
                 raise CoreNLPServerError(
                     returncode,
                     "CoreNLP server exited during initialization. "
                     "The error was: {}".format(error_msg),
                 )
             time.sleep(1)
-        
+
         # Check one more time if the process is still running
         returncode = self.popen.poll()
         if returncode is not None:

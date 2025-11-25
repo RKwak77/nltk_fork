@@ -26,9 +26,11 @@ EMOJI_PATTERN = r"""
 # Compile the regex pattern with verbose and Unicode flags
 EMOJI_RE = regex.compile(EMOJI_PATTERN, regex.UNICODE | regex.VERBOSE)
 
+
 def contains_emoji(text: str) -> bool:
     """Return True if the text contains any emoji."""
     return bool(EMOJI_RE.search(text))
+
 
 def extract_emojis(text: str):
     """Return a list of all emoji sequences found in the text."""
